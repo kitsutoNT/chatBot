@@ -1,19 +1,62 @@
 {
   "name": "chatbot",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "out/index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel js/main.js -o out/main.bundle.js",
+    "start": "webpack-dev-server --hot --inline --mode development",
+    "watch": "babel js/main.js -w -o out/main.bundle.js",
+    "webpackwatch": "webpack --progress --devtool source-map --watch"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-2"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^1.1.0",
+    "@material-ui/icons": "^1.1.0",
     "body-parser": "^1.18.3",
     "botbuilder": "^3.15.0",
     "express": "^4.16.3",
     "koa": "^2.5.1",
     "request": "^2.87.0",
     "restify": "^7.2.0"
-  }
+  },
+  "devDependencies": {
+    "atom-react-preview": "^1.1.4",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-standard": "^3.1.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kitsutoNT/chatBot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kitsutoNT/chatBot/issues"
+  },
+  "homepage": "https://github.com/kitsutoNT/chatBot#readme",
+  "description": ""
 }
