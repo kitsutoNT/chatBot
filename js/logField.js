@@ -16,6 +16,12 @@ const styles = theme => ({
 });
 
 class LogField extends React.Component {
+  constructor (props){
+    super(props)
+    this.state={
+      logs: []
+    }
+  }
 
   handleChange = name => event => {
     this.setState({
@@ -35,6 +41,7 @@ class LogField extends React.Component {
           disabled
           rows="10"
           className={classes.textField}
+          onChange={this.props.onTextChange}
           margin="normal"
         />
       </form>
