@@ -1,10 +1,10 @@
 module.exports = {
-  
+
   entry: {
     main :__dirname + "/js/main.js",
   },
   output: {
-    path: __dirname + '/out/',
+    path: __dirname + '/out',
     filename: '[name].bundle.js'
   },
   devServer: {

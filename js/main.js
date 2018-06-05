@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import ComposedTextField from './inputComponent';
 import LogField from './logField'
 
-
-
 const ChatFields= () => (
   <div>
     <ComposedTextField/>

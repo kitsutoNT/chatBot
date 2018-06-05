@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import request from 'superagent'
 
 const styles = theme => ({
   container: {
@@ -23,6 +24,22 @@ class LogField extends React.Component {
     }
   }
 
+  componentWillMount () {
+    this.loadLogs()
+  }
+
+  loadLogs() {
+    request
+    .get('/history/list')
+    .end((err, res) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      this.setState({logs: res.body})
+    })
+  }
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
@@ -31,8 +48,20 @@ class LogField extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    console.log("before logHtml created")
+    console.log(this.state.logs)
+    console.log(this.state.logs[0])
+    const logHtml = this.state.logs.map(log =>(
+      console.log(log.response_timestamp)
+      <div>
+        <li key={log._id + "1"}> {log.response_timestamp} You : {log.user_input}</li>
+        <li key={log._id}> {log.response_timestamp} Bot : {log.bot_response}</li>
+      </div>
+    ))
+    console.log("after logHtml created")
+    console.log(logHtml)
     return (
+      <div>
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="multiline-static"
@@ -43,14 +72,17 @@ class LogField extends React.Component {
           className={classes.textField}
           onChange={this.props.onTextChange}
           margin="normal"
-        />
-      </form>
-    );
+          >
+            <ul>{logHtml}</ul>
+            </TextField>
+        </form>
+      </div>
+      );
+    }
   }
-}
 
-LogField.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  LogField.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
 
-export default withStyles(styles)(LogField);
+  export default withStyles(styles)(LogField);

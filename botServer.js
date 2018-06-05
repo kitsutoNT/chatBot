@@ -3,12 +3,14 @@ const Router= require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const mongoose = require('mongoose');
 const request = require('superagent');
-const koaRequest = require('koa-http-request')
-const Promise = require('promise')
+const serve = require('koa-static');
+const Promise = require('promise');
 
 const app = new Koa();
 const router = new Router();
 const dbUrl = 'mongodb://heroku_2s4j0w7t:qh2ufsv00ffs6f8d01287ua58i@ds147030.mlab.com:47030/heroku_2s4j0w7t'
+app.use(serve(__dirname + '/out'));
+
 
 mongoose.connect(dbUrl, dbErr => {
   if (dbErr) {
@@ -24,12 +26,22 @@ var logSchema = new Schema({
   response_timestamp: String
 });
 
-var Log = mongoose.model("Log", logSchema);
+var Logs = mongoose.model("Log", logSchema);
 
-app
-.use(bodyParser())
+app.use(bodyParser());
 
-function getWeatherInfo(url) {
+function getPastLogs() {
+  return new Promise((resolve, reject) => {
+    Logs.find({}).sort({response_timestamp: 'desc'}).limit(10).exec(function (err, data){
+      if(err) {
+        console.log(err);
+      }
+      resolve(data);
+    });
+  })
+}
+
+function getWeatherInfo(url){
   return new Promise((resolve, reject) => {
     request
     .get(url)
@@ -46,6 +58,10 @@ function getWeatherInfo(url) {
   }
 
   router
+  .get('/', function(ctx, next) {
+    ctx.redirect('/index.html')
+  })
+
   .post('/chat', async (ctx, next) => {
     var timezoneoffset = -9
     var utc = new Date(Date.now() - (timezoneoffset * 60 - new Date().getTimezoneOffset()) * 60000);
@@ -74,14 +90,14 @@ function getWeatherInfo(url) {
             consolle.error(err)}
           );
         }
-        var newLog = new Log({
+        var newLog = new Logs({
           user_input: userInput.user_input,
           bot_response: botRespose,
           response_timestamp: timeStamp
         });
-        
+
         console.log(newLog)
-        newLog.save(function(err, res) {
+        await newLog.save(function(err, res) {
           if(err) {
             console.log(err)
           }
@@ -92,17 +108,20 @@ function getWeatherInfo(url) {
         var botRespose = ""
       })
 
+      .get('/history/list', async (ctx, next) => {
+        await getPastLogs()
+        .then(
+          (logObject) => {
+            ctx.body = logObject
+            console.log("sent logObject")
+            console.log(logObject)
+          })
+          .catch(
+            (err) => {
+              consolle.error(err)
+              console.log("error retrieving log")
+            });
+          });
 
-      .get('/history/list', (ctx, next) => {
-        Log.find({},{sort:{created: -1},limit:10}, function (err, data){
-          if(err) {
-            console.log(err);
-          }
-          console.log(data);
-        });
-      });
-
-
-      app.use(router.routes())
-      app.use(router.allowedMethods())
-      app.listen(3000);
+          app.use(router.routes()).use(router.allowedMethods());
+          app.listen(3000);
