@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import request from 'superagent'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
   container: {
@@ -13,6 +16,21 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 500,
+  },
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    position: 'relative',
+    overflow: 'auto',
+    maxHeight: 300,
+  },
+  listSection: {
+    backgroundColor: 'inherit',
+  },
+  ul: {
+    backgroundColor: 'inherit',
+    padding: 0,
   },
 });
 
@@ -49,34 +67,19 @@ class LogField extends React.Component {
   render() {
     const { classes } = this.props;
     console.log("before logHtml created")
-    console.log(this.state.logs)
     console.log(this.state.logs[0])
-    const logHtml = this.state.logs.map(log =>(
-      console.log(log.response_timestamp)
+    const logHtml = this.state.logs.reverse().map(log =>(
       <div>
-        <li key={log._id + "1"}> {log.response_timestamp} You : {log.user_input}</li>
-        <li key={log._id}> {log.response_timestamp} Bot : {log.bot_response}</li>
+        <ListItem><ListItemText key={log._id + "1"} primary={log.response_timestamp.slice(-8,-1) + " You > "  + log.user_input}/></ListItem>
+        <ListItem><ListItemText key={log._id} primary={log.response_timestamp.slice(-8,-1) + " Bot > "   + log.bot_response}/></ListItem>
       </div>
     ))
     console.log("after logHtml created")
     console.log(logHtml)
     return (
-      <div>
-      <form className={classes.container} noValidate autoComplete="off">
-        <TextField
-          id="multiline-static"
-          label="Chat Log"
-          multiline
-          disabled
-          rows="10"
-          className={classes.textField}
-          onChange={this.props.onTextChange}
-          margin="normal"
-          >
-            <ul>{logHtml}</ul>
-            </TextField>
-        </form>
-      </div>
+      <List className={classes.root}>
+          {logHtml}
+        </List>
       );
     }
   }
