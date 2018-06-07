@@ -6,8 +6,10 @@ const request = require('superagent');
 const serve = require('koa-static');
 const Promise = require('promise');
 
+
 const app = new Koa();
 const router = new Router();
+
 const dbUrl = 'mongodb://heroku_2s4j0w7t:qh2ufsv00ffs6f8d01287ua58i@ds147030.mlab.com:47030/heroku_2s4j0w7t'
 app.use(serve(__dirname + '/out'));
 
@@ -95,6 +97,8 @@ function getWeatherInfo(url){
           bot_response: botRespose,
           response_timestamp: timeStamp
         });
+
+        ctx.body = botRespose
 
         console.log(newLog)
         await newLog.save(function(err, res) {

@@ -70,8 +70,8 @@ class LogField extends React.Component {
     console.log(this.state.logs[0])
     const logHtml = this.state.logs.reverse().map(log =>(
       <div>
-        <ListItem><ListItemText key={log._id + "1"} primary={log.response_timestamp.slice(-8,-1) + " You > "  + log.user_input}/></ListItem>
-        <ListItem><ListItemText key={log._id} primary={log.response_timestamp.slice(-8,-1) + " Bot > "   + log.bot_response}/></ListItem>
+        <ListItem><ListItemText key={log._id + "1"} primary={log.response_timestamp.slice(-8) + " You > "  + log.user_input}/></ListItem>
+        <ListItem><ListItemText key={log._id} primary={log.response_timestamp.slice(-8) + " Bot > "   + log.bot_response}/></ListItem>
       </div>
     ))
     console.log("after logHtml created")

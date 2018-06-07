@@ -5,7 +5,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import request from 'superagent'
+import request from 'superagent';
 
 const styles = theme => ({
   container: {
@@ -43,6 +43,7 @@ class ComposedTextField extends React.Component {
       if (err) {
         console.error(err)
       }
+      console.log(data)
       this.setState({text: ''})
     })
   }
