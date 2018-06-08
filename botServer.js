@@ -98,7 +98,7 @@ function getWeatherInfo(url){
           response_timestamp: timeStamp
         });
 
-        ctx.body = botRespose
+        ctx.body = newLog
 
         console.log(newLog)
         await newLog.save(function(err, res) {
@@ -109,7 +109,6 @@ function getWeatherInfo(url){
             console.log("Successfully Saved!!")
           }
         })
-        var botRespose = ""
       })
 
       .get('/history/list', async (ctx, next) => {

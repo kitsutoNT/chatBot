@@ -28,7 +28,7 @@ const styles = theme => ({
 class ComposedTextField extends React.Component {
   constructor(props) {
         super(props);
-        this.state = {text: '' }
+        this.state = {text: '', newlog: this.props.logs }
     }
 
   handleChange = event => {
@@ -43,8 +43,10 @@ class ComposedTextField extends React.Component {
       if (err) {
         console.error(err)
       }
-      console.log(data)
       this.setState({text: ''})
+      this.props.onClick({
+          value: data.body
+      })
     })
   }
 

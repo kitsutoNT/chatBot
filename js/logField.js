@@ -38,25 +38,10 @@ class LogField extends React.Component {
   constructor (props){
     super(props)
     this.state={
-      logs: []
+      logs: this.props.logs
     }
   }
 
-  componentWillMount () {
-    this.loadLogs()
-  }
-
-  loadLogs() {
-    request
-    .get('/history/list')
-    .end((err, res) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      this.setState({logs: res.body})
-    })
-  }
 
   handleChange = name => event => {
     this.setState({
@@ -66,16 +51,15 @@ class LogField extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log("before logHtml created")
-    console.log(this.state.logs[0])
-    const logHtml = this.state.logs.reverse().map(log =>(
+    const logJSON = this.props.logs
+    console.log("AfterlogJSON" + JSON.stringify(logJSON))
+    const logHtml = logJSON.reverse().map(log =>(
       <div>
         <ListItem><ListItemText key={log._id + "1"} primary={log.response_timestamp.slice(-8) + " You > "  + log.user_input}/></ListItem>
         <ListItem><ListItemText key={log._id} primary={log.response_timestamp.slice(-8) + " Bot > "   + log.bot_response}/></ListItem>
       </div>
     ))
-    console.log("after logHtml created")
-    console.log(logHtml)
+    console.log("LogHtml: " + logHtml)
     return (
       <List className={classes.root}>
           {logHtml}
