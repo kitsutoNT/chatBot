@@ -53,13 +53,12 @@ class LogField extends React.Component {
     const { classes } = this.props;
     const logJSON = this.props.logs
     console.log("AfterlogJSON" + JSON.stringify(logJSON))
-    const logHtml = logJSON.reverse().map(log =>(
+    const logHtml = logJSON.map(log =>(
       <div>
         <ListItem><ListItemText key={log._id + "1"} primary={log.response_timestamp.slice(-8) + " You > "  + log.user_input}/></ListItem>
         <ListItem><ListItemText key={log._id} primary={log.response_timestamp.slice(-8) + " Bot > "   + log.bot_response}/></ListItem>
       </div>
     ))
-    console.log("LogHtml: " + logHtml)
     return (
       <List className={classes.root}>
           {logHtml}
