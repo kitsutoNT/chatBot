@@ -1,17 +1,17 @@
-const Koa = require('koa');
-const Router= require('koa-router');
-const bodyParser = require('koa-bodyparser');
-const mongoose = require('mongoose');
-const request = require('superagent');
-const serve = require('koa-static');
-const Promise = require('promise');
+const Koa = require('koa')
+const Router= require('koa-router')
+const bodyParser = require('koa-bodyparser')
+const mongoose = require('mongoose')
+const request = require('superagent')
+const serve = require('koa-static')
+const Promise = require('promise')
 
 
-const app = new Koa();
-const router = new Router();
+const app = new Koa()
+const router = new Router()
 
 const dbUrl = 'mongodb://heroku_2s4j0w7t:qh2ufsv00ffs6f8d01287ua58i@ds147030.mlab.com:47030/heroku_2s4j0w7t'
-app.use(serve(__dirname + '/out'));
+app.use(serve(__dirname + '/out'))
 
 
 mongoose.connect(dbUrl, dbErr => {
@@ -21,25 +21,25 @@ mongoose.connect(dbUrl, dbErr => {
   else console.log('db connected')
 })
 
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema
 var logSchema = new Schema({
   user_input: String,
   bot_response: String,
   response_timestamp: String
-});
+})
 
-var Logs = mongoose.model("Log", logSchema);
+var Logs = mongoose.model("Log", logSchema)
 
-app.use(bodyParser());
+app.use(bodyParser())
 
 function getPastLogs() {
   return new Promise((resolve, reject) => {
     Logs.find({}).sort({response_timestamp: 'desc'}).limit(10).exec(function (err, data){
       if(err) {
-        console.log(err);
+        console.log(err)
       }
-      resolve(data);
-    });
+      resolve(data)
+    })
   })
 }
 
@@ -50,12 +50,12 @@ function getWeatherInfo(url){
     .end(
       (err, res) => {
         if (err) {
-          reject(err);
+          reject(err)
         }
         else {
-          resolve(res.body.forecasts[0].telop);
+          resolve(res.body.forecasts[0].telop)
         }
-      });
+      })
     })
   }
 
@@ -66,7 +66,7 @@ function getWeatherInfo(url){
 
   .post('/chat', async (ctx, next) => {
     var timezoneoffset = -9
-    var utc = new Date(Date.now() - (timezoneoffset * 60 - new Date().getTimezoneOffset()) * 60000);
+    var utc = new Date(Date.now() - (timezoneoffset * 60 - new Date().getTimezoneOffset()) * 60000)
     var timeStamp = utc.toLocaleString()
     let userInput = ctx.request.body
     var botRespose = ""
@@ -90,13 +90,13 @@ function getWeatherInfo(url){
         .catch(
           (err) => {
             consolle.error(err)}
-          );
+          )
         }
         var newLog = new Logs({
           user_input: userInput.user_input,
           bot_response: botRespose,
           response_timestamp: timeStamp
-        });
+        })
 
         ctx.body = newLog
 
@@ -123,8 +123,8 @@ function getWeatherInfo(url){
             (err) => {
               consolle.error(err)
               console.log("error retrieving log")
-            });
-          });
+            })
+          })
 
-          app.use(router.routes()).use(router.allowedMethods());
-          app.listen(3000);
+          app.use(router.routes()).use(router.allowedMethods())
+          app.listen(3000)

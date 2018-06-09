@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 import request from 'superagent'
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
   container: {
@@ -23,7 +23,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
-    maxHeight: 300,
+    maxHeight: 600,
   },
   listSection: {
     backgroundColor: 'inherit',
@@ -31,28 +31,18 @@ const styles = theme => ({
   ul: {
     backgroundColor: 'inherit',
     padding: 0,
-  },
-});
+  }
+})
 
 class LogField extends React.Component {
-  constructor (props){
+  constructor(props) {
     super(props)
-    this.state={
-      logs: this.props.logs
-    }
+    this.state = {logs: this.props.logs}
   }
 
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
-
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     const logJSON = this.props.logs
-    console.log("AfterlogJSON" + JSON.stringify(logJSON))
     const logHtml = logJSON.map(log =>(
       <div>
         <ListItem><ListItemText key={log._id + "1"} primary={log.response_timestamp.slice(-8) + " You > "  + log.user_input}/></ListItem>
@@ -63,12 +53,12 @@ class LogField extends React.Component {
       <List className={classes.root}>
           {logHtml}
         </List>
-      );
+      )
     }
   }
 
   LogField.propTypes = {
     classes: PropTypes.object.isRequired,
-  };
+  }
 
-  export default withStyles(styles)(LogField);
+  export default withStyles(styles)(LogField)

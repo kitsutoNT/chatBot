@@ -1,15 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ComposedTextField from './inputComponent';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import InputForm from './inputForm'
 import LogField from './logField'
-import request from 'superagent';
+import request from 'superagent'
 
 class ChatBot extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      logs: [],
-      newLog: []
+      logs: []
     }
   }
 
@@ -25,8 +24,8 @@ class ChatBot extends React.Component {
         console.error(err)
         return
       }
-      const reverseLogOrder = res.body.reverse()
-      this.setState({logs: res.body})
+      const reversedLogs = res.body.reverse()
+      this.setState({logs: reversedLogs})
       console.log("After state.log is set: " + this.state.logs)
     })
   }
@@ -46,7 +45,7 @@ class ChatBot extends React.Component {
     console.log("before first render: " + this.state.logs)
     return (
       <div>
-        <ComposedTextField onClick={e => this.updateLogState(e)}/>
+        <InputForm onClick={e => this.updateLogState(e)}/>
         <LogField logs={this.state.logs}/>
       </div>
     )
@@ -58,4 +57,4 @@ class ChatBot extends React.Component {
 
 ReactDOM.render(
   <ChatBot />, document.getElementById('root')
-);
+)
