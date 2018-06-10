@@ -1,64 +1,50 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import request from 'superagent'
 
+// Set CSS styles
 const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 500,
-  },
-  root: {
+  list: {
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     overflow: 'auto',
     maxHeight: 600,
-  },
-  listSection: {
-    backgroundColor: 'inherit',
-  },
-  ul: {
-    backgroundColor: 'inherit',
-    padding: 0,
   }
 })
 
+/**
+ * React component for displaying field of log history
+ */
 class LogField extends React.Component {
   constructor(props) {
     super(props)
+    // The state of logs[] is inherited from parent component, <ChatBot>.
     this.state = {logs: this.props.logs}
   }
 
   render() {
     const { classes } = this.props
     const logJSON = this.props.logs
+    // Iterate through array logs[] using map method, render a pair of user and bot response
     const logHtml = logJSON.map(log =>(
       <div>
         <ListItem><ListItemText key={log._id + "1"} primary={log.response_timestamp.slice(-8) + " You > "  + log.user_input}/></ListItem>
         <ListItem><ListItemText key={log._id} primary={log.response_timestamp.slice(-8) + " Bot > "   + log.bot_response}/></ListItem>
       </div>
     ))
+
     return (
-      <List className={classes.root}>
-          {logHtml}
-        </List>
-      )
-    }
+      <List className={classes.list}>
+        {logHtml}
+      </List>
+    )
   }
 
-  LogField.propTypes = {
-    classes: PropTypes.object.isRequired,
-  }
-
-  export default withStyles(styles)(LogField)
+}
+// Export LogField to be used in main.js
+export default withStyles(styles)(LogField)
