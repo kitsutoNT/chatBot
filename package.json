@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel js/main.js -o out/main.bundle.js",
-    "start": "webpack-dev-server --hot --inline --mode development",
+    "start": "node botServer.js",
     "watch": "babel js/main.js -w -o out/main.bundle.js",
     "webpackwatch": "webpack --progress --devtool source-map --watch"
   },
