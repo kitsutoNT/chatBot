@@ -168,4 +168,4 @@ router
 // Use defined routers above.
 app.use(router.routes()).use(router.allowedMethods())
 // Listen to server.
-app.listen('https://simplechatbot0901.herokuapp.com/')
+app.listen(process.env.PORT || 5000)
